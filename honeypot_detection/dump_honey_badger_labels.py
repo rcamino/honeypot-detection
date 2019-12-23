@@ -24,10 +24,10 @@ def main():
     sqlalchemy_engine = config.create_sqlalchemy_engine()
     sqlalchemy_session = sessionmaker(bind=sqlalchemy_engine)()
 
-    csv_writer = csv.DictWriter(arguments.output, ["address",
-                                                   "evaluation_positive",
-                                                   "label_id",
-                                                   "label_name"])
+    csv_writer = csv.DictWriter(arguments.output, ["contract_address",
+                                                   "contract_evaluation_positive",
+                                                   "contract_label_id",
+                                                   "contract_label_name"])
 
     csv_writer.writeheader()
 
@@ -41,15 +41,15 @@ def main():
             filter(HoneyBadgerContractLabel.address == address).one_or_none()
 
         if entry is None:
-            csv_writer.writerow({"address": address,
-                                 "evaluation_positive": 0,
-                                 "label_id": 0,
-                                 "label_name": "Not Honeypot"})
+            csv_writer.writerow({"contract_address": address,
+                                 "contract_evaluation_positive": 0,
+                                 "contract_label_id": 0,
+                                 "contract_label_name": "Not Honeypot"})
         else:
-            csv_writer.writerow({"address": address,
-                                 "evaluation_positive": entry.evaluation_positive,
-                                 "label_id": entry.honey_badger_label_id,
-                                 "label_name": label_id_to_name[entry.honey_badger_label_id]})
+            csv_writer.writerow({"contract_address": address,
+                                 "contract_evaluation_positive": entry.evaluation_positive,
+                                 "contract_label_id": entry.honey_badger_label_id,
+                                 "contract_label_name": label_id_to_name[entry.honey_badger_label_id]})
 
 
 if __name__ == '__main__':
