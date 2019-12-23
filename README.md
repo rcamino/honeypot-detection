@@ -69,7 +69,7 @@ To crawl the bytecode:
 - Use `--update` if you want to add information to existing contracts (e.g. after source code crawl).
 
 ```bash
-python honeypot_detection/crawl_transactions.py honeybadger.txt --update
+python honeypot_detection/crawl_byte_code.py honeybadger.txt --update
 ```
 
 To crawl both normal and internal transactions:
