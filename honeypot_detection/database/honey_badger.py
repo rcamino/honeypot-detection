@@ -1,13 +1,11 @@
 from sqlalchemy import Column, String, Integer, Boolean
 
 from honeypot_detection.database.base import Base
+from honeypot_detection.database.dictionary import Dictionary
 
 
-class HoneyBadgerLabel(Base):
+class HoneyBadgerLabel(Dictionary):
     __tablename__ = "honey_badger_labels"
-
-    id = Column(Integer(), primary_key=True, autoincrement=True)
-    name = Column(String(length=128))
 
 
 class HoneyBadgerNormalizedContractLabel(Base):

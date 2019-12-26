@@ -31,10 +31,10 @@ def main():
 
     csv_writer.writeheader()
 
-    label_id_to_name = {}
+    label_id_to_value = {}
     labels = sqlalchemy_session.query(HoneyBadgerLabel).all()
     for label in labels:
-        label_id_to_name[label.id] = label.name
+        label_id_to_value[label.id] = label.value
 
     for address in addresses:
         entry = sqlalchemy_session.query(HoneyBadgerContractLabel).\
@@ -49,7 +49,7 @@ def main():
             csv_writer.writerow({"contract_address": address,
                                  "contract_evaluation_positive": entry.evaluation_positive,
                                  "contract_label_id": entry.honey_badger_label_id,
-                                 "contract_label_name": label_id_to_name[entry.honey_badger_label_id]})
+                                 "contract_label_name": label_id_to_value[entry.honey_badger_label_id]})
 
 
 if __name__ == '__main__':

@@ -19,7 +19,7 @@ LABEL_PATTERN = re.compile(r"HoneyBadger Evaluation - ([a-zA-Z ]+).csv")
 def add_label(label, labels, sqlalchemy_session):
     label_id = len(labels) + 1  # starts with one
     labels.append(label)
-    sqlalchemy_session.add(HoneyBadgerLabel(id=label_id, name=label))
+    sqlalchemy_session.add(HoneyBadgerLabel(id=label_id, value=label))
     logger.info("Created label: {:d}={}".format(label_id, label))
     return label_id
 
