@@ -178,3 +178,16 @@ python honeypot_detection/dump_honey_badger_labels.py \
     data/addresses.txt \
     data/labels.csv
 ```
+
+## Merging the dataset
+
+The last step before the analysis is to merge all the dumped files into a dataset:
+
+```bash
+python honeypot_detection/merge_csv_files_by_contract_address.py \
+    data/dataset.csv \
+    data/labels.csv \
+    data/features-fund_flow.csv \
+    data/features-source_code.csv \
+    data/features-transactions.csv
+```
