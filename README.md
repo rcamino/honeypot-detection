@@ -191,3 +191,32 @@ python honeypot_detection/merge_csv_files_by_contract_address.py \
     data/features-source_code.csv \
     data/features-transactions.csv
 ```
+
+## Dictionaries for Categorical Variables
+
+Many variables are one-hot-encoded in the dataset.
+All the mappings between the categorical variable values and the assigned indices or IDs can be dumped in a directory:
+
+```bash
+python honeypot_detection/dump_dictionary.py data
+```
+
+To dump one dictionary in particular:
+
+```bash
+python honeypot_detection/dump_dictionary.py \
+    --dictionary=honey_badger_labels \
+    data/honey_badger_labels.pickle
+```
+
+All the dictionaries can be used in the following way:
+
+```python
+import pickle
+
+with open("data/honey_badger_labels.pickle", "rb") as dictionary_file:
+    dictionary = pickle.load(dictionary_file)
+
+print(dictionary["id_to_value"][1])  # should print "Balance Disorder"
+print(dictionary["value_to_id"]["Balance Disorder"])  # should print 1
+```
