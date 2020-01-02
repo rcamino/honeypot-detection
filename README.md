@@ -47,6 +47,25 @@ Then generate the tables by executing:
 python honeypot_detection/database/create_tables.py
 ```
 
+For the following examples, we need to create the data directory:
+
+```bash
+mkdir data
+```
+
+## Contract addresses
+
+We used the only the contracts from the first 6.5 million blocks of the Ethereum blockchain.
+
+You can download the list of the contract addresses from [here](http://honeybadger.uni.lu/datascience/addresses.txt).
+
+For the following examples, we downloaded the addresses in the data directory:
+
+```bash
+cd data
+wget http://honeybadger.uni.lu/datascience/addresses.txt
+```
+
 ## Crawling the data
 
 **The data is not included in this repository**. We downloaded the data from Etherscan API.
@@ -60,7 +79,7 @@ To crawl the source code:
 - Use `--update` if you want to add information to existing contracts (e.g. after bytecode crawl).
 
 ```bash
-python honeypot_detection/crawl_source_code.py honeybadger.txt --update
+python honeypot_detection/crawl_source_code.py data/addresses.txt --update
 ```
 
 To crawl the bytecode:
@@ -69,7 +88,7 @@ To crawl the bytecode:
 - Use `--update` if you want to add information to existing contracts (e.g. after source code crawl).
 
 ```bash
-python honeypot_detection/crawl_byte_code.py honeybadger.txt --update
+python honeypot_detection/crawl_byte_code.py data/addresses.txt --update
 ```
 
 To crawl both normal and internal transactions:
@@ -77,7 +96,7 @@ To crawl both normal and internal transactions:
 - Crawl based on a file containing one contract address per line.
 
 ```bash
-python honeypot_detection/crawl_transactions.py honeybadger.txt
+python honeypot_detection/crawl_transactions.py data/addresses.txt
 ```
 
 ## Computing additional data
@@ -104,16 +123,16 @@ obtaining one sequence of fund flow cases per contract:
 ```bash
 python honeypot_detection/create_fund_flow_case_sequences.py \
     --processes=2 \
-    honeybadger.txt \
-    fund_flow_case_sequences.csv 
+    data/addresses.txt \
+    data/fund_flow_case_sequences.csv 
 ```
 
 This single process script compute the fund flow features (frequency of each case per contract):
 
 ```bash
 python honeypot_detection/create_fund_flow_case_features.py \
-    fund_flow_case_sequences.csv \
-    fund_flow_case_features.csv 
+    data/fund_flow_case_sequences.csv \
+    data/features-fund_flow.csv 
 ```
 
 This multiprocessing script creates the source code features:
@@ -121,8 +140,8 @@ This multiprocessing script creates the source code features:
 ```bash
 python honeypot_detection/create_source_code_features.py \
     --processes=2 \
-    honeybadger.txt \
-    source_code_features.csv 
+    data/addresses.txt \
+    data/features-source_code.csv 
 ```
 
 This multiprocessing script creates the aggregated transaction features (normal and internal):
@@ -130,8 +149,8 @@ This multiprocessing script creates the aggregated transaction features (normal 
 ```bash
 python honeypot_detection/create_transaction_features.py \
     --processes=2 \
-    honeybadger.txt \
-    transaction_features.csv 
+    data/addresses.txt \
+    data/features-transactions.csv 
 ```
 
 ## Computing the labels
@@ -156,6 +175,6 @@ Then dump the labels into a file:
 
 ```bash
 python honeypot_detection/dump_honey_badger_labels.py \
-    honeybadger.txt \
-    labels.csv
+    data/addresses.txt \
+    data/labels.csv
 ```
