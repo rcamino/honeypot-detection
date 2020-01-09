@@ -43,7 +43,7 @@ def main():
 
     for i, input_row in enumerate(reader):
         # transform the value from bytes to a list of ints
-        fund_flow_case_sequence = list(input_row["value"].encode("utf-8"))
+        fund_flow_case_sequence = list(eval(input_row["value"]))
 
         output_row = {"contract_address": input_row["address"]}
 
