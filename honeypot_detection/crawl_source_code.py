@@ -30,7 +30,7 @@ class SourceCodeCrawler:
         return matches[0]
 
     def fetch_or_create_dictionary_entry_id(self, value, model, parent_id=None):
-        if value is None:
+        if value is None or value.strip() == "":
             return None
 
         query = self.sqlalchemy_session.query(model).filter(model.value == value)
