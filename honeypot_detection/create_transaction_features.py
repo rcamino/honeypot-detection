@@ -62,8 +62,8 @@ class TransactionFeatureWorker(Worker):
     def _build_normal_transaction_features(self, contract, features):
         transactions = self.sqlalchemy_session.query(NormalTransaction). \
             filter(NormalTransaction.crawled_from == contract.address). \
-            order_by(NormalTransaction.block_number.desc(),
-                     NormalTransaction.transaction_index.desc()).all()
+            order_by(NormalTransaction.block_number.asc(),
+                     NormalTransaction.transaction_index.asc()).all()
 
         features["normal_transaction_count"] = 0
         features["normal_transaction_block_count"] = 0

@@ -32,8 +32,8 @@ class FundFlowCaseSequenceWorker(Worker):
 
         transactions = self.sqlalchemy_session.query(NormalTransaction). \
             filter(NormalTransaction.crawled_from == contract.address). \
-            order_by(NormalTransaction.block_number.desc(),
-                     NormalTransaction.transaction_index.desc()).all()
+            order_by(NormalTransaction.block_number.asc(),
+                     NormalTransaction.transaction_index.asc()).all()
 
         for transaction in transactions:
             # transactions should always have source
