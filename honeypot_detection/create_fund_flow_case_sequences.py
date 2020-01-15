@@ -33,7 +33,7 @@ class FundFlowCaseSequenceWorker(Worker):
         transactions = self.sqlalchemy_session.query(NormalTransaction). \
             filter(NormalTransaction.crawled_from == contract.address). \
             order_by(NormalTransaction.block_number.desc(),
-                     NormalTransaction.transaction_index.desc()).yield_per(self.yield_per)
+                     NormalTransaction.transaction_index.desc()).all()
 
         for transaction in transactions:
             # transactions should always have source
@@ -203,7 +203,6 @@ def main():
     argument_parser.add_argument("output", type=str, help="Output file in csv format.")
 
     argument_parser.add_argument("--processes", type=int, help="Number of processes. Default is cpu_count() - 1.")
-    argument_parser.add_argument("--yield_per", type=int, default=10, help="How many rows should be fetched at a time.")
     argument_parser.add_argument("--log_every", type=int, default=5, help="How many seconds between count logs.")
 
     arguments = argument_parser.parse_args()
@@ -215,7 +214,6 @@ def main():
                             arguments.output,
                             COLUMNS,
                             num_processes=arguments.processes,
-                            yield_per=arguments.yield_per,
                             log_every=arguments.log_every)
 
 

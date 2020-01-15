@@ -19,15 +19,13 @@ logger = log_to_stderr()
 
 class Worker:
 
-    def __init__(self, sqlalchemy_session, write_queue, yield_per):
+    def __init__(self, sqlalchemy_session, write_queue):
         """
         :param sqlalchemy_session: to query the database (should be read only queries)
         :param write_queue: should put model instances
-        :param yield_per: option to use when querying in batches
         """
         self.sqlalchemy_session = sqlalchemy_session
         self.write_queue = write_queue
-        self.yield_per = yield_per
 
         self.logger = logger
 
@@ -42,14 +40,14 @@ class Worker:
         raise NotImplementedError
 
 
-def worker_wrapper(read_queue, worker_class, write_queue, yield_per):
+def worker_wrapper(read_queue, worker_class, write_queue):
     logger.info("Worker started...")
 
     sqlalchemy_engine = config.create_sqlalchemy_engine()
     sqlalchemy_session = sessionmaker(bind=sqlalchemy_engine)()
 
     # create the worker
-    worker = worker_class(sqlalchemy_session, write_queue, yield_per)
+    worker = worker_class(sqlalchemy_session, write_queue)
 
     # while there are more addresses in the queue
     while True:
@@ -112,7 +110,7 @@ def write_worker(queue, file_path, field_names):
 
 
 def multiprocess_by_address(addresses, worker_class, output_file_path, output_field_names, num_processes=None,
-                            yield_per=10, log_every=5):
+                            log_every=5):
     """
     Addresses are put into a read queue.
     Several workers are spawn with one SQLAlchemy session each (should be used for read only queries).
@@ -124,7 +122,6 @@ def multiprocess_by_address(addresses, worker_class, output_file_path, output_fi
     :param output_file_path:
     :param output_field_names:
     :param num_processes: how many workers should be spawned
-    :param yield_per: option to use when querying in batches
     :param log_every: amount of seconds between between count logs
     """
     start_time = time.time()
@@ -151,7 +148,7 @@ def multiprocess_by_address(addresses, worker_class, output_file_path, output_fi
     # workers: we will process addresses in parallel
     worker_processes = []
     for _ in range(num_processes):
-        worker_process = Process(target=worker_wrapper, args=(read_queue, worker_class, write_queue, yield_per))
+        worker_process = Process(target=worker_wrapper, args=(read_queue, worker_class, write_queue))
         worker_process.start()
         worker_processes.append(worker_process)
 
