@@ -103,6 +103,13 @@ class SourceCodeCrawler:
 
         # library
         library = self.etherscan_client.parse_str(response["Library"])
+        # if there is a colon in the library string
+        if library is not None and ":" in library:
+            # keep what's before the colon, the rest is usually a hash
+            library = library.split(":")[0]
+            # if it has nothing before the colon do not leave the empty string
+            if len(library) == 0:
+                library = None
         contract.library_id = self.fetch_or_create_dictionary_entry_id(library, ContractLibrary)
 
         # insert or update
