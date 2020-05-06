@@ -3,13 +3,21 @@ Code for the paper ["A Data Science Approach for Honeypot Detection in Ethereum"
 
 ## Pre-requisites
 
-The project was developed using python 3.6.8 with the following packages:
+The crawler and feature extractor was developed using python 3.6.8 with the following packages:
 
 - numpy==1.17.4
 - requests==2.22.0
 - SQLAlchemy==1.3.11
 
-Installation with pip:
+For the machine learning experiments add the following packages:
+
+- jupyter==1.0.0
+- matplotlib==3.1.2
+- pandas==0.25.3
+- scikit-learn==0.21.3
+- xgboost==0.90
+
+To install al the packages with pip:
 
 ```bash
 pip install -r requirements.txt
@@ -220,3 +228,24 @@ with open("data/honey_badger_labels.pickle", "rb") as dictionary_file:
 print(dictionary["id_to_value"][1])  # should print "Balance Disorder"
 print(dictionary["value_to_id"]["Balance Disorder"])  # should print 1
 ```
+
+## Machine Learning Experiments
+
+The machine learning experiments may change every time the code for the feature extraction is changed.
+The version of the experiments published in the paper is presented in the directory `paper_experiments`.
+I uploaded the features extracted for the paper [here](https://drive.google.com/file/d/1eVeuZUVB7mcfBY4BoDEdjXXyZVXcD4ey/view?usp=sharing)
+so you can run the experiments without waiting a long time until the data is crawled.
+Extract the files on that directory and run the jupyter notebooks following the numeric order.
+Additionally, note that the results on the paper may differ a bit because of the randomness involved on the experiments.
+
+Or you can just see the results here on github:
+
+- [Exploratory Analysis and Additional Pre-Processing](paper_experiments/1%20-%20Exploratory%20Analysis%20and%20Additional%20Pre-Processing.ipynb)
+- [Most Relevant Features](paper_experiments/2%20-%20Most%20Relevant%20Features.ipynb)
+- Experiment 1:
+    - [Machine Learning Only Source Code Features](paper_experiments/3a%20-%20Machine%20Learning%20Only%20Source%20Code%20Features.ipynb)
+    - [Machine Learning Only Fund Flow Features](paper_experiments/3b%20-%20Machine%20Learning%20Only%20Fund%20Flow%20Features.ipynb)
+    - [Machine Learning Only Transaction Features](paper_experiments/3c%20-%20Machine%20Learning%20Only%20Transaction%20Features.ipynb)
+    - [Machine Learning All the Features](paper_experiments/3d%20-%20Machine%20Learning%20All%20the%20Features.ipynb)
+- [Experiment 2: Machine Learning One vs All](paper_experiments/4%20-%20Machine%20Learning%20One%20vs%20All.ipynb)
+- [Experiment 3: Predict Probability](paper_experiments/5%20-%20Predict%20Probability.ipynb)
